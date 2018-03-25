@@ -26,7 +26,7 @@ module.exports = {
             "```" +
             "ping - Responde \"!pong\".\n" +
             "addPlayer <UserName> - Añade un jugador.\n" +
-            "tirarDados <NumeroDeTiradas> - Lanza dados de 100 caras." +
+            "tirarDados [NumeroDeTiradas] [numeroDeCaras] - Lanza dados de 100 caras." +
             "```"
         });
     },
@@ -72,19 +72,27 @@ module.exports = {
      * @param {Array} [args] Array of arguments
      */
     throwDices: (channelID, args) => {
-        let throwns = "",
+        let throws = "",
             invalidArgComment = "";
+        // Set dice faces
+        args[1] = parseInt(!args[1] || isNaN(args[1]) || args[1] <= 0 ? 100 : args[1]) + 1;
+
+        // Verify if ther argument is number
         if (!!args[0] && isNaN(args[0])) {
             invalidArgComment = i18n.__("next_time_pass_a_number");
             args[0] = 1;
         }
+        // Limit number of throws to 10
+        args[0] = args[0] > 10 ? 10 : args[0];
+
+        // Throws dices
         for (let i = 0; i < (args[0] || 1); i++) {
-            if (!!throwns) throwns += ", ";
-            throwns += parseInt(Math.random() * (101 - 1) + 1);
+            if (!!throws) throws += ", ";
+            throws += parseInt(Math.random() * (args[1] - 1) + 1);
         }
         bot.sendMessage({
             to: channelID,
-            message: throwns + invalidArgComment
+            message: throws + invalidArgComment
         });
     }
 };

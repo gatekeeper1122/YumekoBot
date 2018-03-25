@@ -54,6 +54,7 @@ bot.on('message', (user, userID, channelID, message, evt) => {
         let args = message.substring(22).split(' '),
             cmd = args[0];
 
+        // Removes the command from the arguments
         args.shift();
         switch (cmd) {
             case 'ping':
