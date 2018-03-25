@@ -71,8 +71,14 @@ module.exports = {
             players[args[0]] = {
                 user: args[0],
                 hp: 10,
-                theon: 100,
-                fatigue: 10
+                zeon: 100,
+                fatigue: 10,
+                money: {
+                  copper: 10,
+                  silver: 2,
+                  gold: 1
+                },
+                inventory: []
             };
 
             // Save changes
@@ -99,16 +105,15 @@ module.exports = {
      * @param {Number} channelID ID of the channel where respond
      * @param {Array} [args] Array of arguments
      */
-    // TODO beutify response
     getPlayerList: (channelID, args) => {
-        // if user is specificated
+        // if player is specificated
         if(args[0]){
             args[0] = args[0].replace('<@', '').replace('>', '');
             // If player exist
             if(players.hasOwnProperty(args[0])) {
                 return bot.sendMessage({
                     to: channelID,
-                    message: JSON.stringify(players[args[0]])
+                    message: utils.beutifyPlayer(players[args[0]])
                 });
             }
             // if player does not exist
@@ -119,10 +124,11 @@ module.exports = {
                 });
             }
         }
+        // Player list
         else {
             return bot.sendMessage({
                 to: channelID,
-                message: JSON.stringify(players)
+                message: utils.beutyfyPlayerList(players)
             });
         }
     },

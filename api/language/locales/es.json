@@ -2,5 +2,13 @@
 	"presence_game_name_1": "Apostando por ver quien muere antes.",
 	"presence_game_name_2": "Haciendo trampas",
 	"presence_game_name_3": "Lanzando dados",
-    "next_time_pass_a_number": ". La próxima vez pasa un número de dados a lanzar... "
+	"next_time_pass_a_number": ". La próxima vez pasa un número de dados a lanzar... ",
+	"life": "Vida",
+	"fatigue": "Cansancio",
+	"zeon": "Zeon",
+	"coins": "Monedas",
+	"inventory": "Inventario",
+	"copper": "Cobre",
+	"silver": "Plata",
+	"gold": "Oro"
 }
