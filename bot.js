@@ -1,5 +1,8 @@
 'use strict';
 
+// Set rootFolder as global
+global.__rootFolder = __dirname;
+
 const Discord = require('discord.io'),
     i18n = require('i18n'),
     auth = require('./config.json'),
@@ -71,6 +74,14 @@ bot.on('message', (user, userID, channelID, message, evt) => {
             case 'añadirPlayer':
             case 'añadirJugador':
                 commands.addPlayer(channelID, args);
+                break;
+
+            case 'getPlayers':
+            case 'listaPlayers':
+            case 'listaJugadores':
+            case 'getPlayer':
+            case 'verJugador':
+                commands.getPlayerList(channelID, args);
                 break;
 
             case 'tirarDados':

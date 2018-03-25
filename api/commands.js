@@ -1,6 +1,16 @@
 'use strict';
 
-const utils = require('./utils.js');
+const utils = require('./utils.js'),
+    fs = require('fs');
+
+let players = {};
+
+// Load players json if exist
+try {
+    players = JSON.parse(fs.readFileSync(__rootFolder + '/players.json'));
+} catch (err) {
+    console.log('Can\'t load ' + __rootFolder + 'players.json');
+}
 
 module.exports = {
     /**
@@ -26,6 +36,7 @@ module.exports = {
             "```" +
             "ping - Responde \"!pong\".\n" +
             "addPlayer <UserName> - Añade un jugador.\n" +
+            "getPlayers [UserName] - Devuelve la lista de jugadores o un jugador especifico.\n" +
             "tirarDados [NumeroDeTiradas] [numeroDeCaras] - Lanza dados de 100 caras." +
             "```"
         });
@@ -35,7 +46,6 @@ module.exports = {
      * @param {Number} channelID ID of the channel where respond
      * @param {Array} [args] Array of arguments
      */
-    // TODO hacer que se guarde los datos
     addPlayer: (channelID, args) => {
         // If there's no arguments responds with help
         if (!args[0]) {
@@ -58,10 +68,61 @@ module.exports = {
                 });
             }
 
-            // Respond with succes
+            players[args[0]] = {
+                user: args[0],
+                hp: 10,
+                theon: 100,
+                fatigue: 10
+            };
+
+            // Save changes
+            fs.writeFile(__rootFolder + '/players.json', JSON.stringify(players), (err) => {
+                if (err) {
+                    console.error(err);
+                    return bot.sendMessage({
+                        to: channelID,
+                        message: 'Error saving the player'
+                    });
+                }
+                else {
+                    // Respond with succes
+                    return bot.sendMessage({
+                        to: channelID,
+                        message: 'Player added: ' + args[0]
+                    });
+                }
+            });
+        }
+    },
+    /**
+     * Get the player list or an specified player data
+     * @param {Number} channelID ID of the channel where respond
+     * @param {Array} [args] Array of arguments
+     */
+    // TODO beutify response
+    getPlayerList: (channelID, args) => {
+        // if user is specificated
+        if(args[0]){
+            args[0] = args[0].replace('<@', '').replace('>', '');
+            // If player exist
+            if(players.hasOwnProperty(args[0])) {
+                return bot.sendMessage({
+                    to: channelID,
+                    message: JSON.stringify(players[args[0]])
+                });
+            }
+            // if player does not exist
+            else {
+                return bot.sendMessage({
+                    to: channelID,
+                    message: 'Player not found: '+ args[0]
+                });
+            }
+        }
+        else {
             return bot.sendMessage({
                 to: channelID,
-                message: 'Player added: ' + args[0]
+                message: JSON.stringify(players)
             });
         }
     },
