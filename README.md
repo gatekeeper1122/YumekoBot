@@ -2,7 +2,7 @@
 
 ## Project WORK IN PROGRESS
 
-Yumeko is a Node.js based Discord bot created to help a [*Anima Beyond Fantasy*](http://www.edgeent.com/libros/coleccion/anima_beyond_fantasy)
+Yumeko is a Node.js based Discord bot created to help an [*Anima Beyond Fantasy*](http://www.edgeent.com/libros/coleccion/anima_beyond_fantasy)
 master.
 
 Counts with basic commands to thrown dices and count player's life.

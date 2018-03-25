@@ -24,9 +24,9 @@ module.exports = {
             to: channelID,
             message: "Command list:\n" +
             "```" +
-            BOT_CALLER + "ping - Responde \"!pong\".\n" +
-            BOT_CALLER + "addPlayer <UserName> - Añade un jugador." +
-            BOT_CALLER + "tirarDados <NumeroDeTiradas> - Lanza dados de 100 caras." +
+            "ping - Responde \"!pong\".\n" +
+            "addPlayer <UserName> - Añade un jugador." +
+            "tirarDados <NumeroDeTiradas> - Lanza dados de 100 caras." +
             "```"
         });
     },
