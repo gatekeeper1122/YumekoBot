@@ -60,6 +60,7 @@ bot.on('message', (user, userID, channelID, message, evt) => {
                 commands.ping(channelID);
                 break;
 
+            case '':
             case 'help':
             case 'ayuda':
                 commands.help(channelID, args);

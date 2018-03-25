@@ -25,7 +25,7 @@ module.exports = {
             message: "Command list:\n" +
             "```" +
             "ping - Responde \"!pong\".\n" +
-            "addPlayer <UserName> - Añade un jugador." +
+            "addPlayer <UserName> - Añade un jugador.\n" +
             "tirarDados <NumeroDeTiradas> - Lanza dados de 100 caras." +
             "```"
         });
