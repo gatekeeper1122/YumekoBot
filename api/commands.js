@@ -29,6 +29,7 @@ module.exports = {
      * @param {Array} [args] Array of arguments
      */
     // TODO hacer que pueda recibir un parametro especifico
+    // TODO multiidioma
     help: (channelID, args) => {
         return bot.sendMessage({
             to: channelID,
@@ -37,6 +38,7 @@ module.exports = {
             "ping - Responde \"!pong\".\n" +
             "addPlayer <UserName> - Añade un jugador.\n" +
             "getPlayers [UserName] - Devuelve la lista de jugadores o un jugador especifico.\n" +
+            "setplayerValue <UserName> <stat> <value> - Modifica un valor de un usuario.\n" +
             "tirarDados [NumeroDeTiradas] [numeroDeCaras] - Lanza dados de 100 caras." +
             "```"
         });
@@ -51,7 +53,7 @@ module.exports = {
         if (!args[0]) {
             return bot.sendMessage({
                 to: channelID,
-                message: 'Use ' + BOT_CALLER + 'addPlayer <UserName>'
+                message: 'Use addPlayer <UserName>'
             });
         }
         else {
@@ -82,7 +84,7 @@ module.exports = {
             };
 
             // Save changes
-            fs.writeFile(__rootFolder + '/players.json', JSON.stringify(players), (err) => {
+            utils.savePlayers(players).then((err)=>{
                 if (err) {
                     console.error(err);
                     return bot.sendMessage({
@@ -94,7 +96,7 @@ module.exports = {
                     // Respond with succes
                     return bot.sendMessage({
                         to: channelID,
-                        message: 'Player added: ' + args[0]
+                        message: 'Welcome to the game: ' + args[0] + "\nhttps://i.pinimg.com/originals/9b/8d/79/9b8d7933d4841ebce270b6ae7c16002b.jpg"
                     });
                 }
             });
@@ -131,6 +133,86 @@ module.exports = {
                 message: utils.beutyfyPlayerList(players)
             });
         }
+    },
+    /**
+     * Modify any status (except inventory) of the player
+     * @param {Number} channelID ID of the channel where respond
+     * @param {Array} [args] Array of arguments
+     */
+    setPlayerValue: (channelID, args) => {
+        // Check arguments
+        if(args[0] === undefined || args[1] === undefined || args[2] === undefined){
+            return bot.sendMessage({
+               to: channelID,
+               message: "Use setplayerValue <UserName> <stat> <value> - Modifica un valor de un usuario.\n"
+            });
+        }
+        // if player is specificated
+        if(args[0]){
+            args[0] = args[0].replace('<@', '').replace('>', '');
+            // If player exist
+            if(players.hasOwnProperty(args[0])) {
+
+                switch (args[1].toLowerCase()) {
+                    case 'vida':
+                    case 'hp':
+                    case 'life':
+                    case 'pv':
+                        players[args[0]].hp = args[2];
+                        break;
+                    case 'cansancio':
+                    case 'fatiga':
+                    case 'fatigue':
+                    case 'tiredness':
+                        players[args[0]].fatigue = args[2];
+                        break;
+                    case 'zeon':
+                    case 'magia':
+                    case 'magic':
+                        players[args[0]].zeon = args[2];
+                        break;
+                    case 'bronce':
+                    case 'bronze':
+                    case 'copper':
+                    case 'cobre':
+                        players[args[0]].money.copper = args[2];
+                        break;
+                    case 'plata':
+                    case 'silver':
+                        players[args[0]].money.silver = args[2];
+                        break;
+                    case 'oro':
+                    case 'gold':
+                        players[args[0]].money.gold = args[2];
+                        break;
+                }
+                // Save changes
+                utils.savePlayers(players).then((err)=>{
+                    if (err) {
+                        console.error(err);
+                        return bot.sendMessage({
+                            to: channelID,
+                            message: 'Error saving the player'
+                        });
+                    }
+                    else {
+                        // Respond with succes
+                        return bot.sendMessage({
+                            to: channelID,
+                            message: utils.beutifyPlayer(players[args[0]])
+                        });
+                    }
+                });
+            }
+            // if player does not exist
+            else {
+                return bot.sendMessage({
+                    to: channelID,
+                    message: 'Player not found: '+ args[0]
+                });
+            }
+        }
+
     },
     /**
      * Responds with a random number between 1 and 100.

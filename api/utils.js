@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs');
+
 /**
  * Get a player object and returns a beauty string
  * @param {Object} player Player to beautify
@@ -49,5 +51,15 @@ module.exports = {
             beautyPlayerList += _beutifyPlayer(players[i]);
         });
         return beautyPlayerList;
+    },
+    //TODO
+    savePlayers: (players) => {
+        return new Promise((resolve) => {
+            // Save changes
+            fs.writeFile(__rootFolder + '/players.json', JSON.stringify(players), (err) => {
+                resolve(err);
+            });
+        })
+
     }
 };

@@ -59,7 +59,14 @@ bot.on('message', (user, userID, channelID, message, evt) => {
 
         // Removes the command from the arguments
         args.shift();
-        switch (cmd) {
+        // Easter egg
+        if (message.toLowerCase().includes('trampa')) {
+            return bot.sendMessage({
+                to: channelID,
+                message: "https://i.ytimg.com/vi/KNHeVgPUdvw/maxresdefault.jpg"
+            })
+        }
+        else switch (cmd) {
             case 'ping':
                 commands.ping(channelID);
                 break;
@@ -90,6 +97,14 @@ bot.on('message', (user, userID, channelID, message, evt) => {
                 commands.throwDices(channelID, args);
                 break;
 
+
+            case 'setPlayerValue':
+            case 'setValue':
+            case 'set':
+                commands.setPlayerValue(channelID, args);
+                break;
+
+            // Easter egg
             case 'canta':
             case 'sing':
                 bot.sendMessage({
@@ -97,14 +112,11 @@ bot.on('message', (user, userID, channelID, message, evt) => {
                     message: "Hashire sori yo, Kaze no you ni, Tsukimihara wo, Padoru padoru!",
                     tts: true
                 });
+                bot.sendMessage({
+                    to: channelID,
+                    message: "https://www.youtube.com/watch?v=LHJCliPz1b8",
+                });
                 break;
-        }
-        // Easter egg
-        if (message.toLowerCase().includes('trampa')) {
-            return bot.sendMessage({
-                to: channelID,
-                message: "https://i.ytimg.com/vi/KNHeVgPUdvw/maxresdefault.jpg"
-            })
         }
     }
     // Easter egg
@@ -112,6 +124,13 @@ bot.on('message', (user, userID, channelID, message, evt) => {
         return bot.sendMessage({
             to: channelID,
             message: "The FBI is comming for " + user + "! \nhttps://www.youtube.com/watch?v=YTK6AFknqkU"
+        });
+    }
+    // Yup, i love easter eggs
+    else if (message.toLowerCase().includes('apuesta') || message.toLowerCase().includes('aposta')) {
+        return bot.sendMessage({
+            to: channelID,
+            message: "https://i.ytimg.com/vi/ke4O3GBFu2I/maxresdefault.jpg"
         });
     }
 });
